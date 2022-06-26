@@ -1,0 +1,6 @@
+*.o
+!atomport-asm.o
+*.elf
+*.hex
+*.map
+accessToken.txt

@@ -10,6 +10,7 @@
 #ifdef DEBUG
 #include <stdio.h>
 #include "debug.h"
+#include "string.h"
 #endif
 
 //------------------------------------------------------------------------
@@ -40,9 +41,9 @@
 #define DI_CHANNEL 4
 
 // upper voltage limit of the LDR
-#define LDR_UPPER_LIMIT 4.2
+#define LDR_UPPER_LIMIT 860
 // lower voltage limit of the LDR
-#define LDR_LOWER_LIMIT 0.5
+#define LDR_LOWER_LIMIT 102
 
 #define REGISTER_SIZE 256
 

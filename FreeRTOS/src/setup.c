@@ -11,7 +11,8 @@ void setup()
 #endif
 	// set GPIO ports D6 and D5 to output for LED_1 and LED_2
 	GPIO_setOutput(&DDRD, PWM_CHANNEL);
-	GPIO_setOutput(&DDRD, DO_CHANNEL);
+	GPIO_setOutput(&DDRD, LED1_CHANNEL);
+	GPIO_setOutput(&DDRD, LED2_CHANNEL);
 	// set GPOO port D4 to input for LDR-module
 	GPIO_setInput(&DDRD, &PORTD, DI_CHANNEL);
 	// initialize ADC

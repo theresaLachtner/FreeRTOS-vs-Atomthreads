@@ -11,6 +11,7 @@
 #include "../FreeRTOS-Kernel/include/task.h"
 #include "../FreeRTOS-Kernel/include/semphr.h"
 #include "../FreeRTOS-Kernel/include/queue.h"
+#include "../FreeRTOS-Kernel/include/timers.h"
 
 // only included in debug-mode
 #ifdef DEBUG
@@ -22,16 +23,30 @@
 // GLOBAL VARIABLE DECLARATION
 //------------------------------------------------------------------------
 
+// task handle for dimLED task
+TaskHandle_t th_dimLED;
+// task handle for indicationLED task
+TaskHandle_t th_indicationLED;
+// task handle for periodicLED task
+TaskHandle_t th_periodicLED;
+
+// semaphore handle for ADC read function
+SemaphoreHandle_t sh_ADCread;
+
+// queue handle for ADC interrupt queue
+QueueHandle_t qh_ADCinterrupt;
+
+// extern timer handle for period timer
+TimerHandle_t tih_periodTimer;
+
+//------------------------------------------------------------------------
+// PROJECT SPECIFIC TYPEDEF
+//------------------------------------------------------------------------
+
 
 
 //------------------------------------------------------------------------
-// PRIVATE TYPEDEF
-//------------------------------------------------------------------------
-
-
-
-//------------------------------------------------------------------------
-// PRIVATE MAKROS
+// MAKROS
 //------------------------------------------------------------------------
 
 // ADC channel of potentiometer 1

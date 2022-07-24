@@ -1,17 +1,30 @@
+/*------------------------------------------------------------------------
+Project:    FreeRTOS vs. Atomthreads
+Submodule:  FreeRTOS
+Author:     Theresa Lachtner
+Date:       24.07.2022
+------------------------------------------------------------------------*/
+
 #include "../lib/common.h"
 #include "../lib/PWM.h"
 
-extern uint16_t _POT_value;
-
+//------------------------------------------------------------------------
+// PWM INIT FUNCTION
+// initializes PWM pin (GPIO port D pin 6)
+//------------------------------------------------------------------------
 void PWM_init()
 {
-    //glear OCA on compare match, set OC0A at BOTTOM
+    //clear OCA on compare match, set OC0A at BOTTOM
     TCCR0A |= (1 << COM0A1) | (1 << WGM01) | (1 << WGM00);
     //prescaler of timer is 8
     TCCR0B |= (1 << CS01);
     OCR0A = 0x00;
 }
 
+//------------------------------------------------------------------------
+// PWM ADJUST FUNCTION
+// asjust PWM by given value
+//------------------------------------------------------------------------
 void PWM_adjust(int16_t val)
 {
     //add current OCR0A register to value

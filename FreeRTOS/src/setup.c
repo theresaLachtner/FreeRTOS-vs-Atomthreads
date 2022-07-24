@@ -1,9 +1,20 @@
+/*------------------------------------------------------------------------
+Project:    FreeRTOS vs. Atomthreads
+Submodule:  FreeRTOS
+Author:     Theresa Lachtner
+Date:       24.07.2022
+------------------------------------------------------------------------*/
+
 #include "../lib/setup.h"
 #include "../lib/common.h"
 #include "../lib/GPIO.h"
 #include "../lib/ADC.h"
 #include "../lib/PWM.h"
 
+//------------------------------------------------------------------------
+// SETUP FUNCTION
+// set up UART (for debugging), GPIO pins, ADC and PWM
+//------------------------------------------------------------------------
 void setup()
 {
 #ifdef DEBUG
@@ -13,7 +24,7 @@ void setup()
 	GPIO_setOutput(&DDRD, PWM_CHANNEL);
 	GPIO_setOutput(&DDRD, LED1_CHANNEL);
 	GPIO_setOutput(&DDRD, LED2_CHANNEL);
-	// set GPOO port D4 to input for LDR-module
+	// set GPIO port D4 to input for LDR-module
 	GPIO_setInput(&DDRD, &PORTD, DI_CHANNEL);
 	// initialize ADC
 	ADC_init();

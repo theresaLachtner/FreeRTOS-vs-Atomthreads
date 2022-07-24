@@ -1,3 +1,10 @@
+/*------------------------------------------------------------------------
+Project:    FreeRTOS vs. Atomthreads
+Submodule:  FreeRTOS
+Author:     Theresa Lachtner
+Date:       24.07.2022
+------------------------------------------------------------------------*/
+
 // initialize UART
 void UART_init (uint32_t baudrate);
 // transmit single byte via UART

@@ -1,3 +1,10 @@
+/*------------------------------------------------------------------------
+Project:    FreeRTOS vs. Atomthreads
+Submodule:  FreeRTOS
+Author:     Theresa Lachtner
+Date:       24.07.2022
+------------------------------------------------------------------------*/
+
 #include "../lib/common.h"
 #include "../lib/task_periodicLED.h"
 #include "../lib/ADC.h"
@@ -32,6 +39,7 @@ void timer_callback(TimerHandle_t tih_timer)
         // take ADC read mutex
         if(xSemaphoreTake(sh_ADCread, (TickType_t)10) == pdTRUE)
         {
+            UART_sendstring("tim\n");
             // read timer period from potentiometer 2
             timerPeriod = ADC_read(POT2_CHANNEL);
             // give back mutex

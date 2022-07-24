@@ -1,3 +1,10 @@
+/*------------------------------------------------------------------------
+Project:    FreeRTOS vs. Atomthreads
+Submodule:  FreeRTOS
+Author:     Theresa Lachtner
+Date:       24.07.2022
+------------------------------------------------------------------------*/
+
 #include "../lib/common.h"
 #include "../lib/task_indicationLED.h"
 

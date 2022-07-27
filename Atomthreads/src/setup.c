@@ -1,9 +1,20 @@
+/*------------------------------------------------------------------------
+Project:    FreeRTOS vs. Atomthreads
+Submodule:	Atomthreads
+Author:     Theresa Lachtner
+Date:       26.07.2022
+------------------------------------------------------------------------*/
+
 #include "../lib/setup.h"
 #include "../lib/common.h"
 #include "../lib/GPIO.h"
 #include "../lib/ADC.h"
 #include "../lib/PWM.h"
 
+//------------------------------------------------------------------------
+// SETUP FUNCTION
+// set up UART (for debugging), GPIO pins, ADC and PWM
+//------------------------------------------------------------------------
 void setup()
 {
 #ifdef DEBUG

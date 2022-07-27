@@ -18,7 +18,7 @@ extern SemaphoreHandle_t sh_ADCread;
 extern QueueHandle_t qh_ADCinterrupt;
 
 //------------------------------------------------------------------------
-// LOCAL VARIABLES
+// FORWARD DECLARATIONS
 //------------------------------------------------------------------------
 
 // local helper function that waits for interrupt from ADC
@@ -57,10 +57,6 @@ uint16_t ADC_read(uint16_t channel)
 }
 
 //------------------------------------------------------------------------
-// LOCAL FUNCTIONS
-//------------------------------------------------------------------------
-
-//------------------------------------------------------------------------
 // ISR WAIT FUNCTION
 // local helper function that waits for interrupt from ADC
 //------------------------------------------------------------------------
@@ -69,15 +65,9 @@ void ISR_wait()
 	// get current task handle
 	TaskHandle_t th_current = xTaskGetCurrentTaskHandle();
 	// send current task handle to queue
-	if (xQueueSend(qh_ADCinterrupt, &th_current, 10) != pdTRUE)
-	{
-		UART_sendstring("ERROR!\n");
-	}
+	xQueueSend(qh_ADCinterrupt, &th_current, 10);
 	// start conversion
 	ADCSRA |= (1 << ADSC);
 	// wait until notification from ISR
-	if (xTaskNotifyWait(0, 0, NULL, (TickType_t)1000) != pdTRUE)
-	{
-		UART_sendstring("ERROR!\n");
-	}
+	xTaskNotifyWait(0, 0, NULL, (TickType_t)1000);
 }

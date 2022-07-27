@@ -1,3 +1,10 @@
+/*------------------------------------------------------------------------
+Project:    FreeRTOS vs. Atomthreads
+Submodule:	Atomthreads
+Author:     Theresa Lachtner
+Date:       26.07.2022
+------------------------------------------------------------------------*/
+
 #ifndef COMMON_H_
 #define COMMON_H_
 
@@ -23,16 +30,19 @@
 // GLOBAL VARIABLE DECLARATION
 //------------------------------------------------------------------------
 
+// mutex for ADC read function
+ATOM_MUTEX _mutex_ADCread;
 
+// queue for sending data ready message to ADC read funciton
+ATOM_QUEUE _queue_ADCread;
+// queue for signalling timer thread from timer callback
+ATOM_QUEUE _queue_timerCallback;
+
+// timer for periodic toggling LED
+ATOM_TIMER _timer_periodicLED;
 
 //------------------------------------------------------------------------
-// PRIVATE TYPEDEF
-//------------------------------------------------------------------------
-
-
-
-//------------------------------------------------------------------------
-// PRIVATE MAKROS
+// PROJECT SPECIFIC MAKROS
 //------------------------------------------------------------------------
 
 // ADC channel of potentiometer 1

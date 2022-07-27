@@ -1,7 +1,17 @@
+/*------------------------------------------------------------------------
+Project:    FreeRTOS vs. Atomthreads
+Submodule:	Atomthreads
+Author:     Theresa Lachtner
+Date:       26.07.2022
+------------------------------------------------------------------------*/
+
 #include "../lib/common.h"
 #include "../lib/debug.h"
 
-//initialize UART
+//------------------------------------------------------------------------
+// UART INIT FUNCTION
+// initializes UART in arduino
+//------------------------------------------------------------------------
 void UART_init(uint32_t baudrate)
 {
     //formula for baudrate register, double speed mode
@@ -19,7 +29,10 @@ void UART_init(uint32_t baudrate)
 
 }
 
-//transmit single byte via UART
+//------------------------------------------------------------------------
+// UART TRANSMIT FUNCTION
+// sends single byte to UART
+//------------------------------------------------------------------------
 void UART_transmit(uint8_t byte_to_send) 
 {
 
@@ -33,7 +46,10 @@ void UART_transmit(uint8_t byte_to_send)
 
 }
 
-//transmit string via UART
+//------------------------------------------------------------------------
+// UART SENDSTRING FUNCTION
+// sends string to UART - uses uart transmit function
+//------------------------------------------------------------------------
 void UART_sendstring(char *p) 
 {
     while (*p) 

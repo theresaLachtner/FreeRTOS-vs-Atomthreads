@@ -48,7 +48,6 @@ void task_dimLED(void *pvParameters)
             // take ADC read mutex
             if (xSemaphoreTake(sh_ADCread, (TickType_t)10) == pdPASS)
             {
-                UART_sendstring("1\n");
                 // read value from potentiometer 1
                 pot_value = ADC_read(POT1_CHANNEL);
                 // give back mutex
@@ -72,7 +71,7 @@ void task_dimLED(void *pvParameters)
             // take ADC read mutex
             if (xSemaphoreTake(sh_ADCread, (TickType_t)10) == pdPASS)
             {
-                // UART_sendstring("2\n");
+                // string("2\n");
                 //  read value from LDR
                 ldr_value = ADC_read(LDR_CHANNEL);
                 // give back mutex

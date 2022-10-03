@@ -37,7 +37,7 @@
 #include "include/queue.h"
 
 #if ( configUSE_CO_ROUTINES == 1 )
-    #include "croutine.h"
+    #include "include/croutine.h"
 #endif
 
 /* Lint e9021, e961 and e750 are suppressed as a MISRA exception justified

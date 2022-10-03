@@ -8,6 +8,7 @@ Date:       24.07.2022
 #include "../lib/common.h"
 #include "../lib/task_indicationLED.h"
 
+
 //------------------------------------------------------------------------
 // TASK FUNCTION
 // for indication LED task - reads digital input from light dependent

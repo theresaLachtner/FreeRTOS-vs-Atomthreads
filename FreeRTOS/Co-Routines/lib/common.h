@@ -19,6 +19,7 @@ Date:       24.07.2022
 #include "../FreeRTOS-Kernel/include/semphr.h"
 #include "../FreeRTOS-Kernel/include/queue.h"
 #include "../FreeRTOS-Kernel/include/timers.h"
+#include "../FreeRTOS-Kernel/include/croutine.h"
 
 // only included in debug-mode
 #ifdef DEBUG
@@ -42,6 +43,12 @@ SemaphoreHandle_t sh_ADCread;
 
 // queue handle for ADC interrupt queue
 QueueHandle_t qh_ADCinterrupt;
+// queue handle for blocking ADC read
+QueueHandle_t qh_ADCmutex;
+// queue handle for receiving from ISR
+QueueHandle_t qh_fromISR;
+// queue handle for blocking until timer elapses
+QueueHandle_t qh_timerElapsed;
 
 // extern timer handle for period timer
 TimerHandle_t tih_periodTimer;

@@ -45,6 +45,8 @@ QueueHandle_t qh_ADCinterrupt;
 
 // extern timer handle for period timer
 TimerHandle_t tih_periodTimer;
+// timer handle for measurement timer
+TimerHandle_t tih_measurementTimer;
 
 //------------------------------------------------------------------------
 // PROJECT SPECIFIC TYPEDEF

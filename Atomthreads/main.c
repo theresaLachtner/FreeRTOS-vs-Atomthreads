@@ -10,6 +10,7 @@ Date:       26.07.2022
 #include "lib/thread_dimLED.h"
 #include "lib/thread_indicationLED.h"
 #include "lib/thread_periodicLED.h"
+#include "lib/thread_measurement.h"
 
 //------------------------------------------------------------------------
 // GLOBAL VARIABLES
@@ -23,6 +24,8 @@ extern ATOM_QUEUE _queue_ADCread;
 extern ATOM_QUEUE _queue_timerCallback;
 // periodic LED timer
 extern ATOM_TIMER _timer_periodicLED;
+// periodic LED timer
+extern ATOM_TIMER _timer_measurement;
 
 //------------------------------------------------------------------------
 // STATIC VARIABLES
@@ -48,6 +51,11 @@ static ATOM_TCB tcb_periodicLED;
 // stack of the periodic LED thread
 static uint8_t stack_periodicLED[128];
 
+// tcb storage for periodic LED thread
+static ATOM_TCB tcb_measurement;
+// stack of the periodic LED thread
+static uint8_t stack_measurement[32];
+
 // idle stac for atomOSInit function
 static uint8_t stack_idleThread[128];
 
@@ -59,7 +67,6 @@ ISR(ADC_vect)
 {
 	// mandatory atomthreads function when entering an ISR
 	atomIntEnter();
-	UART_sendstring("2\n");
 
 	// data ready message
 	uint8_t msg = 1;
@@ -94,9 +101,15 @@ int main()
 	atomThreadCreate(&tcb_indicationLED, 10, thread_indicationLED, 0, &stack_indicationLED[0], 128, TRUE);
 	// create periodic LED thread
 	atomThreadCreate(&tcb_periodicLED, 10, thread_periodicLED, 0, &stack_periodicLED[0], 128, TRUE);
+	// create measurement thread
+	atomThreadCreate(&tcb_measurement, 10, thread_measurement, 0, &stack_measurement[0], 32, TRUE);
 
 	_timer_periodicLED.cb_func = timer_periodicLED;
 	_timer_periodicLED.cb_ticks = 1000;
+
+	_timer_measurement.cb_func = timer_measurement;
+	_timer_measurement.cb_ticks = 10;
+
 	//atomTimerRegister(&_timer_periodicLED);
 	
 	// create mutex for ADC read

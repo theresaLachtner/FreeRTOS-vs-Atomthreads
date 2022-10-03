@@ -42,32 +42,12 @@ void ADC_init()
 // ADC READ FUNCTION
 // read single value from ADC-channel
 //------------------------------------------------------------------------
-uint16_t ADC_read(uint16_t channel)
+void ADC_read(uint16_t channel)
 {
 	// clear channel register
 	ADMUX &= ~(0x1F);
 	// write channel to register
 	ADMUX |= (channel & 0x1F);
-
-	// task is resumed in ISR after conversion is complete
-	ISR_wait();
-
-	// return the raw converted value
-	return ADCW;
-}
-
-//------------------------------------------------------------------------
-// ISR WAIT FUNCTION
-// local helper function that waits for interrupt from ADC
-//------------------------------------------------------------------------
-void ISR_wait()
-{
-	// get current task handle
-	TaskHandle_t th_current = xTaskGetCurrentTaskHandle();
-	// send current task handle to queue
-	xQueueSend(qh_ADCinterrupt, &th_current, 10);
 	// start conversion
 	ADCSRA |= (1 << ADSC);
-	// wait until notification from ISR
-	xTaskNotifyWait(0, 0, NULL, (TickType_t)1000);
 }

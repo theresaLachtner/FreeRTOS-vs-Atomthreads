@@ -11,6 +11,8 @@ Date:       24.07.2022
 #include "lib/task_dimLED.h"
 #include "lib/task_indicationLED.h"
 #include "lib/task_periodicLED.h"
+#include "lib/timer_measurement.h"
+
 
 //------------------------------------------------------------------------
 // GLOBAL VARIABLES
@@ -31,6 +33,8 @@ extern QueueHandle_t qh_ADCinterrupt;
 
 // timer handle for period timer
 extern TimerHandle_t tih_periodTimer;
+// timer handle for measurement timer
+extern TimerHandle_t tih_measurementTimer;
 
 #if (configUSE_IDLE_HOOK == 1)
 
@@ -73,6 +77,8 @@ int main()
 
 	// create periodic LED timer
 	tih_periodTimer = xTimerCreate("periodTimer", 10, pdTRUE, (void *)0, timer_callback);
+	// create periodic LED timer
+	tih_measurementTimer = xTimerCreate("measurementTimer", 5000, pdTRUE, (void *)0, m_timer_callback);
 
 	// create LED dimming task with highest priority
 	xTaskCreate(&task_dimLED, (portCHAR *)"dimLED", configMINIMAL_STACK_SIZE, NULL, 4, &th_dimLED);
@@ -81,6 +87,10 @@ int main()
 
 	// start periodic LED timer
 	if (xTimerStart(tih_periodTimer, 10) != pdPASS)
+	{
+		UART_sendstring("could not start timer.\n");
+	}
+	if (xTimerStart(tih_measurementTimer, 10) != pdPASS)
 	{
 		UART_sendstring("could not start timer.\n");
 	}

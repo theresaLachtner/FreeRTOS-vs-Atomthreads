@@ -40,6 +40,8 @@ ATOM_QUEUE _queue_timerCallback;
 
 // timer for periodic toggling LED
 ATOM_TIMER _timer_periodicLED;
+// periodic LED timer
+ATOM_TIMER _timer_measurement;
 
 //------------------------------------------------------------------------
 // PROJECT SPECIFIC MAKROS

@@ -12,7 +12,7 @@
 	#define configTOTAL_HEAP_SIZE		( (size_t ) ( 1200 ) )
 	#define configMAX_PRIORITIES		( 4 )
 	#define configMAX_TASK_NAME_LEN		( 8 )
-	#define configUSE_PREEMPTION		0
+	#define configUSE_PREEMPTION		1
 	#define configUSE_IDLE_HOOK			1
 	#define configUSE_TICK_HOOK			0
 	// timer specific defines
@@ -34,8 +34,8 @@
 
 	/* Co-routine definitions. */
 	//##2009.10.20: defined as "0":
-	#define configUSE_CO_ROUTINES 		0
-	#define configMAX_CO_ROUTINE_PRIORITIES ( 2 )
+	#define configUSE_CO_ROUTINES 		1
+	#define configMAX_CO_ROUTINE_PRIORITIES ( 3 )
 
 	/* setup() and loop() parameters */
 	#define configSETUP_STACK_SIZE          (configMINIMAL_STACK_SIZE * 2)

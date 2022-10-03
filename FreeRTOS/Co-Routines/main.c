@@ -8,9 +8,9 @@ Date:       24.07.2022
 #include "lib/common.h"
 #include "lib/setup.h"
 
-#include "lib/task_dimLED.h"
-#include "lib/task_indicationLED.h"
-#include "lib/task_periodicLED.h"
+#include "lib/coroutine_dimLED.h"
+#include "lib/coroutine_indicationLED.h"
+#include "lib/timer_periodicLED.h"
 
 //------------------------------------------------------------------------
 // GLOBAL VARIABLES
@@ -26,8 +26,10 @@ extern TaskHandle_t th_periodicLED;
 // semaphore hanlde ADC read
 extern SemaphoreHandle_t sh_ADCread;
 
-// queue handle for ADC interrupt queue
-extern QueueHandle_t qh_ADCinterrupt;
+// queue handle for blocking ADC read
+extern QueueHandle_t qh_ADCmutex;
+// queue handle for receiving from ISR
+extern QueueHandle_t qh_fromISR;
 
 // timer handle for period timer
 extern TimerHandle_t tih_periodTimer;
@@ -44,15 +46,12 @@ void vApplicationIdleHook(void);
 //------------------------------------------------------------------------
 ISR(ADC_vect)
 {
-	// stores the task handle currently blocking the ADC read mutex
-	TaskHandle_t th_current;
-	// task woken by receive
-	BaseType_t taskWokenByReceive = pdFALSE;
-	// read the current task handle from queue
-	xQueueReceiveFromISR(qh_ADCinterrupt, &th_current, &taskWokenByReceive);
-	// resume current ADC reading task
-	xTaskNotifyFromISR(th_current, 0, (eNotifyAction)eNoAction, NULL);
-	portYIELD();
+	// message to queue
+	uint8_t msg = 1;
+	BaseType_t x = pdFALSE;
+	UART_sendstring("3\n");
+	// send conversion ready message to queue
+	crQUEUE_SEND_FROM_ISR(qh_fromISR, &msg, x);
 }
 
 //------------------------------------------------------------------------
@@ -65,19 +64,25 @@ int main()
 	// setup GPIO, ADC, PWM and UART
 	setup();
 
-	// create mutex for ADC read
-	sh_ADCread = xSemaphoreCreateMutex();
-
-	// create queue for ADC interrupt
-	qh_ADCinterrupt = xQueueCreate(5, sizeof(TaskHandle_t));
+	// create queue for blocking ADC read
+	qh_ADCmutex = xQueueCreate(1, sizeof(uint8_t));
+	// create queue for notifying from ISR
+	qh_fromISR = xQueueCreate(1, sizeof(uint8_t));
 
 	// create periodic LED timer
 	tih_periodTimer = xTimerCreate("periodTimer", 10, pdTRUE, (void *)0, timer_callback);
 
 	// create LED dimming task with highest priority
-	xTaskCreate(&task_dimLED, (portCHAR *)"dimLED", configMINIMAL_STACK_SIZE, NULL, 4, &th_dimLED);
+	if(xCoRoutineCreate(coroutine_dimLED, 2, 0) != pdPASS)
+	{
+		UART_sendstring("could not start dimmer\n");
+	}
 	// create LED indication task with medium priority
-	xTaskCreate(&task_indicationLED, (portCHAR *)"indicationLED", configMINIMAL_STACK_SIZE, NULL, 4, &th_indicationLED);
+	if(xCoRoutineCreate(coroutine_indicationLED, 1, 1) != pdPASS)
+	{
+		UART_sendstring("could not start indicator\n");
+	}
+	xCoRoutineCreate(coroutine_periodicLED, 2, 2);
 
 	// start periodic LED timer
 	if (xTimerStart(tih_periodTimer, 10) != pdPASS)
@@ -92,6 +97,10 @@ int main()
 #if (configUSE_IDLE_HOOK == 1)
 void vApplicationIdleHook(void)
 {
-	// vCoRoutineSchedule();
+	while(1 == 1)
+	{
+		UART_sendstring("sceduled\n");
+		vCoRoutineSchedule();
+	}
 }
 #endif

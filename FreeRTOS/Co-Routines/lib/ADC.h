@@ -9,4 +9,4 @@ Date:       24.07.2022
 void ADC_init();
 
 // read single value from ADC-channel
-uint16_t ADC_read(uint16_t channel);
+void ADC_read(uint16_t channel);

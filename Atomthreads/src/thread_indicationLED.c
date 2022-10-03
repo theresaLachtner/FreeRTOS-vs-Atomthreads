@@ -7,6 +7,8 @@ Date:       26.07.2022
 
 #include "../lib/common.h"
 #include "../lib/thread_indicationLED.h"
+#include "../lib/mem.h"
+
 
 
 //------------------------------------------------------------------------

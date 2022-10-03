@@ -41,7 +41,6 @@ void thread_periodicLED(uint32_t param)
 
         // get mutex on ADC read
         atomMutexGet(&_mutex_ADCread, 10);
-        UART_sendstring("got mutex\n");
         // read potentiometer 2 value
         tickCount = ADC_read(POT2_CHANNEL);
         // put back mutex on ADC read
